@@ -139,6 +139,13 @@ class MainDraw:
       PrizeClass.FOUR_PLUS: total_prize_pool * 0.0275
     }
 
+    if self.rollover > 0:
+      prize_pools[PrizeClass.SEVEN] += self.rollover
+    maxmillion_pool = 0
+    if self.seven_prize_cap is not None and prize_pools[PrizeClass.SEVEN] > self.seven_prize_cap:
+      maxmillion_pool += prize_pools[PrizeClass.SEVEN] - self.seven_prize_cap
+      prize_pools[PrizeClass.SEVEN] = self.seven_prize_cap
+
     prize_amounts = {
       PrizeClass.FOUR: 20,
       PrizeClass.THREE_PLUS: 20,
@@ -151,13 +158,6 @@ class MainDraw:
         prize_amounts[prize_class] = 0
       else:
         prize_amounts[prize_class] = prize_pool / winner_count
-
-    if self.rollover > 0:
-      prize_amounts[PrizeClass.SEVEN] += self.rollover
-    maxmillion_pool = 0
-    if self.seven_prize_cap is not None and prize_amounts[PrizeClass.SEVEN] > self.seven_prize_cap:
-      maxmillion_pool += prize_amounts[PrizeClass.SEVEN] - self.seven_prize_cap
-      prize_amounts[PrizeClass.SEVEN] = self.seven_prize_cap
 
     self.prize_amounts = prize_amounts
 
